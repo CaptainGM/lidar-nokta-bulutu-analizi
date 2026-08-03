@@ -41,7 +41,6 @@ python plot_lidar.py
 
 ## Belgeler
 
-- [`rapor.pdf`](rapor.pdf) — proje raporu (IEEE formatı)
 - `lidar_plot.png`, `line_*.dat`, `points.dat` — örnek bir çalıştırmadan kalan örnek çıktılar
 
 Farklı bir veri seti ile alternatif bir çalıştırma örneği:
