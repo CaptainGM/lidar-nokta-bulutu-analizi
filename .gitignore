@@ -1,0 +1,4 @@
+*.exe
+*.o
+*.obj
+downloaded_scan.toml
