@@ -2,6 +2,18 @@
 
 2D LiDAR tarama verisini (TOML formatında) işleyip RANSAC ile duvarları (doğruları) tespit eden, doğrular arası kesişim noktalarını ve robota olan mesafeleri hesaplayan bir C programı; sonuçlar Python/matplotlib ile görselleştirilir.
 
+![Örnek çıktı](lidar_plot.png)
+
+## Mimari
+
+```mermaid
+flowchart LR
+    T[TOML Tarama Verisi] --> C["C Programı (RANSAC)"]
+    C --> D["line_*.dat / points.dat"]
+    D --> P[plot_lidar.py]
+    P --> IMG[lidar_plot.png]
+```
+
 ## Nasıl çalışır
 
 1. **Veri kaynağı seçimi:** program çalışınca yerel `scan_data_nan.toml` dosyası, Kocaeli Üniversitesi'nin sağladığı örnek taramalardan biri (`lidar1.toml`...`lidar5.toml`) ya da elle girilen bir dosya/URL kullanılabilir
