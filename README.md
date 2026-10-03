@@ -1,60 +1,46 @@
-# LiDAR Nokta Bulutu / Duvar Tespiti Analizi
+# LiDAR Nokta Bulutu Analizi
 
-2D LiDAR tarama verisini (TOML formatında) işleyip RANSAC ile duvarları (doğruları) tespit eden, doğrular arası kesişim noktalarını ve robota olan mesafeleri hesaplayan bir C programı; sonuçlar Python/matplotlib ile görselleştirilir.
+2D LiDAR tarama verisinden (TOML formatında) duvarları RANSAC ile bulan C programı. Bulunan doğruların kesişim noktalarını ve robota olan açı ve mesafeleri de hesaplıyor. Sonuçlar Python ile çizdiriliyor.
 
 ![Örnek çıktı](lidar_plot.png)
 
-## Mimari
+## Nasıl çalışıyor
 
-```mermaid
-flowchart LR
-    T[TOML Tarama Verisi] --> C["C Programı (RANSAC)"]
-    C --> D["line_*.dat / points.dat"]
-    D --> P[plot_lidar.py]
-    P --> IMG[lidar_plot.png]
-```
+1. Program açılınca veri kaynağı soruluyor: yerel `scan_data_nan.toml`, Kocaeli Üniversitesi'nin verdiği örnek taramalardan biri (`lidar1.toml` ... `lidar5.toml`) ya da elle girilen bir dosya veya adres
+2. Noktalar arasından duvarlara denk gelen doğrular RANSAC ile bulunuyor
+3. Doğruların kesişim noktaları ve robota (0,0) olan açı ve mesafeleri hesaplanıyor
+4. Sonuçlar `lidar_data.txt`, `line_*.dat` ve `points.dat` dosyalarına yazılıyor
+5. `plot_lidar.py` bu dosyaları okuyup `lidar_plot.png` grafiğini çiziyor (`plot_commands.gnu` ile gnuplot'ta da çizilebilir)
 
-## Nasıl çalışır
+## Kullanılanlar
 
-1. **Veri kaynağı seçimi:** program çalışınca yerel `scan_data_nan.toml` dosyası, Kocaeli Üniversitesi'nin sağladığı örnek taramalardan biri (`lidar1.toml`...`lidar5.toml`) ya da elle girilen bir dosya/URL kullanılabilir
-2. **RANSAC ile doğru tespiti:** taranan noktalar arasından duvarlara karşılık gelen doğrular RANSAC algoritmasıyla bulunur
-3. **Kesişim analizi:** doğrular arası kesişim noktaları ve robota (0,0) olan açı/mesafeleri hesaplanır
-4. **Çıktı:** `lidar_data.txt` ve `line_*.dat` / `points.dat` dosyalarına yazılır
-5. **Görselleştirme:** `plot_lidar.py`, bu verileri okuyup `lidar_plot.png` olarak bir analiz grafiği üretir
-
-## Teknoloji
-
-- C (Winsock/BSD sockets ile HTTP indirme, RANSAC doğru uydurma)
-- Python (numpy, matplotlib) — görselleştirme
-- gnuplot (`plot_commands.gnu`) — alternatif çizim
+C (HTTP ile veri indirmek için Winsock/BSD socket), Python (numpy, matplotlib), gnuplot
 
 ## Derleme ve çalıştırma
 
-Windows (MSVC/MinGW, winsock2 ile):
+Windows:
 
-```bash
+```
 gcc lidar_analiz.c -o lidar_analiz.exe -lws2_32
 lidar_analiz.exe
 ```
 
-Linux/macOS:
+Linux / macOS:
 
-```bash
+```
 gcc lidar_analiz.c -o lidar_analiz
 ./lidar_analiz
 ```
 
-Ardından grafiği oluşturmak için:
+Grafik için:
 
-```bash
+```
 pip install numpy matplotlib
 python plot_lidar.py
 ```
 
-## Belgeler
+`lidar_plot.png`, `line_*.dat` ve `points.dat` dosyaları bir çalıştırmadan kalan örnek çıktılar.
 
-- `lidar_plot.png`, `line_*.dat`, `points.dat` — örnek bir çalıştırmadan kalan örnek çıktılar
+Başka bir veri setiyle çalıştırma:
 
-Farklı bir veri seti ile alternatif bir çalıştırma örneği:
-
-![Alternatif çalıştırma](alternatif-calistirma.jpeg)
+![Başka bir çalıştırma](alternatif-calistirma.jpeg)
